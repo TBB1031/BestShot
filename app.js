@@ -4,7 +4,6 @@ const startBtn = document.getElementById('startBtn');
 const errorMessage = document.getElementById('errorMessage');
 
 let stream = null;
-let previewStreams = null;
 
 async function startCamera() {
   try {
@@ -22,25 +21,21 @@ async function startCamera() {
       });
     }
 
-    if (!previewStreams) {
-      const [videoTrack] = stream.getVideoTracks();
-
-      previewStreams = {
-        vertical: new MediaStream([videoTrack]),
-        wide: new MediaStream([videoTrack.clone()])
-      };
-    }
-
-    verticalFrame.srcObject = previewStreams.vertical;
-    wideFrame.srcObject = previewStreams.wide;
-
-    await Promise.all([verticalFrame.play(), wideFrame.play()]);
+    verticalFrame.srcObject = stream;
+    wideFrame.srcObject = stream;
 
     startBtn.textContent = 'Camera Started';
     startBtn.disabled = true;
   } catch (err) {
     console.error(err);
-    errorMessage.textContent = 'Camera error: ' + err.message;
+    const messageByName = {
+      NotAllowedError: 'Camera access was denied. Please allow camera permissions and try again.',
+      NotFoundError: 'No camera was found on this device.',
+      NotReadableError: 'The camera is already in use by another app.',
+      OverconstrainedError: 'The requested camera settings are not available.'
+    };
+
+    errorMessage.textContent = messageByName[err.name] || `Camera error: ${err.message}`;
     errorMessage.hidden = false;
   }
 }
