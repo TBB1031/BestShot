@@ -14,11 +14,12 @@
 
     <main class="content">
       <div class="camera-stack">
-        <video id="verticalFrame" autoplay playsinline muted webkit-playsinline="true"></video>
-        <video id="wideFrame" autoplay playsinline muted webkit-playsinline="true"></video>
+        <video id="verticalFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Vertical camera frame"></video>
+        <video id="wideFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Wide camera frame"></video>
       </div>
 
       <button id="startBtn" type="button">Start Camera</button>
+      <p id="errorMessage" role="alert" hidden></p>
     </main>
   </div>
 
