@@ -92,6 +92,12 @@ body {
   opacity: 0.4;
 }
 
+.controls button.active {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
 #startBtn {
   grid-column: 1 / -1;
 }
