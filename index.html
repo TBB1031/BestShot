@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Dual Camera</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app-shell">
@@ -18,8 +18,14 @@
         <video id="wideFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Wide camera frame"></video>
       </div>
 
-      <button id="startBtn" type="button">Start Camera</button>
+      <div class="controls">
+        <button id="startBtn" type="button">Start Camera</button>
+        <button id="switchBtn" type="button" disabled>Switch Camera</button>
+        <button id="photoBtn" type="button" disabled>Take Photo</button>
+        <button id="recordBtn" type="button" disabled>Record Video</button>
+      </div>
       <p id="errorMessage" role="alert" hidden></p>
+      <canvas id="captureCanvas" hidden></canvas>
     </main>
   </div>
 
