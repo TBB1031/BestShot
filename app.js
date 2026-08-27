@@ -57,38 +57,7 @@ function turnCameraOff() {
   recordBtn.disabled = true;
 }
 
-async function turnCameraOn() {
-  try {
-    clearError();
 
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error('Camera access is not supported in this browser.');
-    }
-
-    await openStream({ video: { facingMode: 'user' }, audio: false });
-    await refreshVideoDevices();
-
-    const activeDeviceId = stream.getVideoTracks()[0]?.getSettings().deviceId;
-    currentDeviceIndex = Math.max(0, videoDevices.findIndex((d) => d.deviceId === activeDeviceId));
-
-    startBtn.textContent = 'Turn Camera Off';
-    startBtn.setAttribute('aria-pressed', 'true');
-    startBtn.classList.add('active');
-    switchBtn.disabled = videoDevices.length < 2;
-    photoBtn.disabled = false;
-    recordBtn.disabled = false;
-  } catch (err) {
-    console.error(err);
-    const messageByName = {
-      NotAllowedError: 'Camera access was denied. Please allow camera permissions and try again.',
-      NotFoundError: 'No camera was found on this device.',
-      NotReadableError: 'The camera is already in use by another app.',
-      OverconstrainedError: 'The requested camera settings are not available.'
-    };
-
-    showError(messageByName[err.name] || `Camera error: ${err.message}`);
-  }
-}
 
 function toggleCamera() {
   if (stream) {
