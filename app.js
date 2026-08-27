@@ -50,6 +50,8 @@ function turnCameraOff() {
   wideFrame.srcObject = null;
 
   startBtn.textContent = 'Turn Camera On';
+  startBtn.setAttribute('aria-pressed', 'false');
+  startBtn.classList.remove('active');
   switchBtn.disabled = true;
   photoBtn.disabled = true;
   recordBtn.disabled = true;
@@ -70,6 +72,8 @@ async function turnCameraOn() {
     currentDeviceIndex = Math.max(0, videoDevices.findIndex((d) => d.deviceId === activeDeviceId));
 
     startBtn.textContent = 'Turn Camera Off';
+    startBtn.setAttribute('aria-pressed', 'true');
+    startBtn.classList.add('active');
     switchBtn.disabled = videoDevices.length < 2;
     photoBtn.disabled = false;
     recordBtn.disabled = false;
@@ -159,6 +163,8 @@ function startRecording() {
   mediaRecorder.start();
   isRecording = true;
   recordBtn.textContent = 'Stop Recording';
+  recordBtn.setAttribute('aria-pressed', 'true');
+  recordBtn.classList.add('active');
 }
 
 function stopRecording() {
@@ -167,6 +173,8 @@ function stopRecording() {
   }
   isRecording = false;
   recordBtn.textContent = 'Record Video';
+  recordBtn.setAttribute('aria-pressed', 'false');
+  recordBtn.classList.remove('active');
 }
 
 function toggleRecording() {
