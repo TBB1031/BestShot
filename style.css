@@ -67,6 +67,40 @@ body {
   outline-offset: 3px;
 }
 
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.controls button {
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  background: #111;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.controls button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.controls button:disabled {
+  opacity: 0.4;
+}
+
+#startBtn {
+  grid-column: 1 / -1;
+}
+
+#recordBtn {
+  grid-column: 1 / -1;
+}
+
+
 #errorMessage {
   margin: 12px 0 0;
   color: #ff6b6b;
