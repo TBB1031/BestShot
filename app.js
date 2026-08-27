@@ -17,10 +17,12 @@ async function startCamera() {
       });
     }
 
-    verticalFrame.srcObject = stream;
-    wideFrame.srcObject = stream;
+    const [videoTrack] = stream.getVideoTracks();
 
-    await Promise.allSettled([verticalFrame.play(), wideFrame.play()]);
+    verticalFrame.srcObject = new MediaStream([videoTrack]);
+    wideFrame.srcObject = new MediaStream([videoTrack]);
+
+    await Promise.all([verticalFrame.play(), wideFrame.play()]);
 
     startBtn.textContent = 'Camera Started';
     startBtn.disabled = true;
