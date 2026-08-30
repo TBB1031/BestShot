@@ -3,31 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Dual Camera</title>
+  <title>BestShot</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app-shell">
-    <header class="header-bar">
-      <h1>Dual Camera</h1>
-    </header>
+    <div class="camera-view">
+      <header class="top-bar">
+        <button id="startBtn" class="icon-btn" type="button" aria-pressed="false" aria-label="Turn camera on or off">&#10005;</button>
+        <button class="icon-btn" type="button" disabled aria-label="Info">&#9432;</button>
+        <h1 class="camera-title">Dual Camera</h1>
+        <button class="icon-btn" type="button" disabled aria-label="Flash">&#9889;</button>
+        <button class="icon-btn" type="button" disabled aria-label="Settings">&#9881;</button>
+      </header>
 
-    <main class="content">
+      <p id="errorMessage" class="error-banner" role="alert" hidden></p>
+
       <div class="camera-stack">
-        <video id="verticalFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Vertical camera frame"></video>
-        <video id="wideFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Wide camera frame"></video>
+        <div class="frame-wrap frame-wrap--vertical">
+          <video id="verticalFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Vertical camera frame"></video>
+          <div class="grid-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="frame-wrap frame-wrap--wide">
+          <video id="wideFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Wide camera frame"></video>
+          <div class="grid-overlay" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="pill-row">
+        <span class="pill">1&times;</span>
+        <span class="pill">9:16 &times; 16:9</span>
+        <span class="pill">Filter</span>
       </div>
 
-      <div class="controls">
-        <button id="startBtn" type="button" aria-pressed="false">Start Camera</button>
-        <button id="switchBtn" type="button" disabled>Switch Camera</button>
-        <button id="photoBtn" type="button" disabled>Take Photo</button>
-        <button id="recordBtn" type="button" disabled aria-pressed="false">Record Video</button>
+      <div class="shutter-row">
+        <button class="thumb-btn" type="button" disabled aria-label="Gallery"></button>
+        <button id="photoBtn" class="shutter-btn" type="button" disabled aria-label="Take photo"></button>
+        <button id="recordBtn" class="mode-btn" type="button" disabled aria-pressed="false" aria-label="Toggle video recording">&#9724;</button>
+        <button id="switchBtn" class="switch-btn" type="button" disabled aria-label="Switch camera">&#8635;</button>
       </div>
-      <p id="errorMessage" role="alert" hidden></p>
-      <canvas id="captureCanvas" hidden></canvas>
-    </main>
+    </div>
   </div>
+
+  <canvas id="captureCanvas" hidden></canvas>
 
   <script src="app.js"></script>
 </body>

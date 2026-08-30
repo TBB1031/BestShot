@@ -1,113 +1,245 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
-  min-height: 100vh;
   background: #000;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  overflow: hidden;
+  touch-action: manipulation;
 }
 
 .app-shell {
-  min-height: 100vh;
-  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
 }
 
-.header-bar {
-  padding: 20px 16px 12px;
+.camera-view {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #000;
+  min-height: 0;
 }
 
-.header-bar h1 {
+.top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: calc(env(safe-area-inset-top) + 10px) 12px 16px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.camera-title {
+  position: absolute;
+  left: 50%;
+  top: calc(env(safe-area-inset-top) + 14px);
+  transform: translateX(-50%);
   margin: 0;
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
+  pointer-events: none;
 }
 
-.content {
-  padding: 0 12px 12px;
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:disabled {
+  opacity: 0.35;
+}
+
+.icon-btn:focus-visible,
+.shutter-btn:focus-visible,
+.mode-btn:focus-visible,
+.switch-btn:focus-visible,
+.thumb-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+#startBtn.active {
+  color: #ffd60a;
+}
+
+.error-banner {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 52px);
+  left: 12px;
+  right: 12px;
+  z-index: 3;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 59, 48, 0.15);
+  color: #ff6b6b;
+  font-size: 14px;
+  text-align: center;
 }
 
 .camera-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 12px 0;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr;
+  gap: 2px;
+  background: #000;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.frame-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #111;
+}
+
+.frame-wrap--vertical {
+  aspect-ratio: auto;
+}
+
+.frame-wrap--wide {
+  aspect-ratio: auto;
 }
 
 #verticalFrame,
 #wideFrame {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
+  height: 100%;
   border: 0;
-  border-radius: 16px;
-  background: #111;
   object-fit: cover;
   object-position: center;
 }
 
-#verticalFrame {
-  aspect-ratio: 9 / 16;
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+  background-size: 33.333% 33.333%;
 }
 
-#wideFrame {
-  aspect-ratio: 16 / 9;
+.bottom-bar {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 14px 16px calc(env(safe-area-inset-bottom) + 18px);
+  background: rgba(18, 18, 18, 0.92);
+  border-radius: 22px 22px 0 0;
 }
 
-#startBtn {
-  width: 100%;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #444;
-  background: #111;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-#startBtn:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 3px;
-}
-
-.controls {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.pill-row {
+  display: flex;
+  justify-content: center;
   gap: 10px;
 }
 
-.controls button {
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #444;
-  background: #111;
-  color: #fff;
-  font-size: 15px;
+.pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 12px;
   font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
 }
 
-.controls button:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 3px;
+.shutter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
 }
 
-.controls button:disabled {
-  opacity: 0.4;
+.thumb-btn,
+.mode-btn,
+.switch-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-.controls button.active {
-  background: #fff;
-  color: #000;
-  border-color: #fff;
+.thumb-btn {
+  border-radius: 10px;
 }
 
-#startBtn {
-  grid-column: 1 / -1;
+.thumb-btn:hover:not(:disabled),
+.mode-btn:hover:not(:disabled),
+.switch-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
 }
 
-#recordBtn {
-  grid-column: 1 / -1;
+.thumb-btn:disabled,
+.mode-btn:disabled,
+.switch-btn:disabled,
+.shutter-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
+.mode-btn.active {
+  background: #ff3b30;
+  border-color: #ff3b30;
+}
 
-#errorMessage {
-  margin: 12px 0 0;
-  color: #ff6b6b;
+.shutter-btn {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  background: #ff3b30;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.shutter-btn:hover:not(:disabled) {
+  box-shadow: 0 0 12px rgba(255, 59, 48, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
+.shutter-btn:active:not(:disabled) {
+  transform: scale(0.94);
 }
