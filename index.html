@@ -19,17 +19,23 @@
 
       <p id="errorMessage" class="error-banner" role="alert" hidden></p>
 
-      <div class="camera-stack">
-        <div class="frame-wrap frame-wrap--vertical">
-          <video id="verticalFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Vertical camera frame"></video>
-          <div class="grid-overlay" aria-hidden="true"></div>
-        </div>
-        <div class="frame-wrap frame-wrap--wide">
-          <video id="wideFrame" autoplay playsinline muted webkit-playsinline="true" aria-label="Wide camera frame"></video>
-          <div class="grid-overlay" aria-hidden="true"></div>
-        </div>
+       <div class="preview-area">
+  
+      <div class="preview preview-portrait">
+          <video id="portraitPreview"
+                 autoplay
+                 playsinline
+                 muted></video>
       </div>
-    </div>
+  
+      <div class="preview preview-landscape">
+          <video id="landscapePreview"
+                 autoplay
+                 playsinline
+                 muted></video>
+      </div>
+  
+  </div>
 
     <div class="bottom-bar">
       <div class="pill-row">
