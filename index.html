@@ -1,59 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>BestShot</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Dual Camera</title>
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <div class="camera-view">
-      <header class="top-bar">
-        <button id="startBtn" class="icon-btn" type="button" aria-pressed="false" aria-label="Turn camera on or off">&#10005;</button>
-        <button class="icon-btn" type="button" disabled aria-label="Info">&#9432;</button>
-        <h1 class="camera-title">Dual Camera</h1>
-        <button class="icon-btn" type="button" disabled aria-label="Flash">&#9889;</button>
-        <button class="icon-btn" type="button" disabled aria-label="Settings">&#9881;</button>
-      </header>
 
-      <p id="errorMessage" class="error-banner" role="alert" hidden></p>
+  <header class="header">
+    <h1>Dual Camera</h1>
+  </header>
 
-    <div class="preview-area">
-  
-      <div class="verticalFrame">
-          <video id="verticalFrame"
-                 autoplay
-                 playsinline
-                 muted></video>
-      </div>
-  
-      <div class="wideFrame">
-         <video id="wideFrame"
-                 autoplay
-                 playsinline
-                 muted></video>
-      </div>
-  
+  <main>
+    <div class="camera-stack">
+      <video
+        id="verticalFrame"
+        autoplay
+        playsinline
+        muted
+      ></video>
+
+      <video
+        id="wideFrame"
+        autoplay
+        playsinline
+        muted
+      ></video>
     </div>
 
-    <div class="bottom-bar">
-      <div class="pill-row">
-        <span class="pill">1&times;</span>
-        <span class="pill">9:16 &times; 16:9</span>
-        <span class="pill">Filter</span>
-      </div>
-
-      <div class="shutter-row">
-        <button class="thumb-btn" type="button" disabled aria-label="Gallery"></button>
-        <button id="photoBtn" class="shutter-btn" type="button" disabled aria-label="Take photo"></button>
-        <button id="recordBtn" class="mode-btn" type="button" disabled aria-pressed="false" aria-label="Toggle video recording">&#9724;</button>
-        <button id="switchBtn" class="switch-btn" type="button" disabled aria-label="Switch camera">&#8635;</button>
-      </div>
+    <div class="controls">
+      <button id="startBtn">Start Camera</button>
     </div>
-  </div>
-
-  <canvas id="captureCanvas" hidden></canvas>
+  </main>
 
   <script src="app.js"></script>
 </body>
