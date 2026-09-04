@@ -33,7 +33,7 @@ function stopStream() {
 
 async function refreshVideoDevices() {
   const devices = await navigator.mediaDevices.enumerateDevices();
-  videoDevices = devices.filter((device) => device.kind === 'videoinput');
+   videoDevices = devices.filter((device) => device.kind === 'videoinput');
 }
 
 async function openStream(constraints) {
