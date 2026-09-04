@@ -6,6 +6,7 @@ const captureBtn = document.getElementById('captureBtn');
 const flipBtn = document.getElementById('flipBtn');
 const galleryBtn = document.getElementById('galleryBtn');
 const clearBtn = document.getElementById('clearBtn');
+const lensLabel = document.getElementById('lensLabel');
 const statusEl = document.getElementById('status');
 const capturesSection = document.getElementById('captures');
 const verticalPhoto = document.getElementById('verticalPhoto');
@@ -21,6 +22,12 @@ const settingsBtn = document.getElementById('settingsBtn');
 
 let stream = null;
 let facingMode = 'user';
+
+function updateCameraLabel() {
+  if (lensLabel) {
+    lensLabel.textContent = facingMode === 'user' ? 'Front' : 'Rear';
+  }
+}
 
 function setStatus(message) {
   if (statusEl) {
@@ -73,6 +80,7 @@ async function startCamera() {
     ]);
 
     if (startBtn) startBtn.textContent = 'Stop Camera';
+    updateCameraLabel();
     enableCaptureControls();
     setStatus('Camera is live');
   } catch (error) {
@@ -97,9 +105,40 @@ function toggleCamera() {
 
 async function switchCamera() {
   facingMode = facingMode === 'user' ? 'environment' : 'user';
-  if (stream) {
-    await startCamera();
+  updateCameraLabel();
+  await startCamera();
+}
+
+function dataUrlToBlob(dataUrl) {
+  const [header, encodedData] = dataUrl.split(',');
+  const mimeMatch = header.match(/data:(.*?);base64/);
+  const mimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+  const bytes = atob(encodedData);
+  const buffer = new Uint8Array(bytes.length);
+
+  for (let index = 0; index < bytes.length; index += 1) {
+    buffer[index] = bytes.charCodeAt(index);
   }
+
+  return new Blob([buffer], { type: mimeType });
+}
+
+function setDownloadLink(link, dataUrl, filename) {
+  if (!link) {
+    return;
+  }
+
+  if (link.dataset.objectUrl) {
+    URL.revokeObjectURL(link.dataset.objectUrl);
+  }
+
+  const blob = dataUrlToBlob(dataUrl);
+  const objectUrl = URL.createObjectURL(blob);
+
+  link.dataset.objectUrl = objectUrl;
+  link.href = objectUrl;
+  link.setAttribute('download', filename);
+  link.hidden = false;
 }
 
 function cropAndDownload(video, aspect, targetImage, downloadLink, filename) {
@@ -144,9 +183,7 @@ function cropAndDownload(video, aspect, targetImage, downloadLink, filename) {
   const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
   targetImage.src = dataUrl;
   targetImage.hidden = false;
-  downloadLink.href = dataUrl;
-  downloadLink.setAttribute('download', filename);
-  downloadLink.hidden = false;
+  setDownloadLink(downloadLink, dataUrl, filename);
 }
 
 function capturePhotos() {
@@ -176,8 +213,23 @@ function clearCaptures() {
     widePhoto.hidden = true;
   }
 
-  if (verticalDownload) verticalDownload.removeAttribute('href');
-  if (wideDownload) wideDownload.removeAttribute('href');
+  if (verticalDownload) {
+    if (verticalDownload.dataset.objectUrl) {
+      URL.revokeObjectURL(verticalDownload.dataset.objectUrl);
+      delete verticalDownload.dataset.objectUrl;
+    }
+    verticalDownload.removeAttribute('href');
+    verticalDownload.hidden = true;
+  }
+
+  if (wideDownload) {
+    if (wideDownload.dataset.objectUrl) {
+      URL.revokeObjectURL(wideDownload.dataset.objectUrl);
+      delete wideDownload.dataset.objectUrl;
+    }
+    wideDownload.removeAttribute('href');
+    wideDownload.hidden = true;
+  }
 
   if (capturesSection) {
     capturesSection.hidden = true;
@@ -245,4 +297,5 @@ if (settingsBtn) {
 }
 
 disableCaptureControls();
+updateCameraLabel();
 setStatus('Camera is off');
