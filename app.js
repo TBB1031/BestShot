@@ -4,9 +4,16 @@ const startBtn = document.getElementById('startBtn');
 
 let stream = null;
 
+/**
+ * Requests the front-facing camera and mirrors its stream in both preview frames.
+ *
+ * Any previously opened stream is stopped before requesting a replacement so its
+ * camera tracks do not remain active.
+ *
+ * @returns {Promise<void>} Resolves when both preview frames are playing.
+ */
 async function startCamera() {
   try {
-    // Stop existing stream if restarting
     if (stream) {
       stream.getTracks().forEach(track => track.stop());
     }
@@ -18,11 +25,12 @@ async function startCamera() {
       audio: false
     });
 
-    // Attach SAME stream to both video elements
+    // Both aspect-ratio previews intentionally show the same camera stream.
     verticalFrame.srcObject = stream;
     wideFrame.srcObject = stream;
 
-    // Required for some Safari versions
+    // Calling play explicitly accommodates browsers that do not honor autoplay
+    // until a stream has been assigned after a user gesture.
     await Promise.all([
       verticalFrame.play(),
       wideFrame.play()
