@@ -1,6 +1,6 @@
 # BestShot
 
-BestShot is a small, static camera-preview web app. After permission is granted, it opens the device's front-facing camera and displays the same live stream in portrait and landscape frames.
+BestShot is a small, static camera app. After permission is granted, it opens a camera stream and displays it in portrait and landscape frames. The shutter produces separate 9:16 and 16:9 photos cropped from the same moment.
 
 ## Run locally
 
@@ -16,15 +16,16 @@ Camera access requires a secure context: use `https://` in production or `http:/
 
 1. Open the app and select **Start Camera**.
 2. Grant the browser permission to use the camera.
-3. View the front-facing stream in both aspect-ratio previews.
+3. Use the shutter to capture 9:16 and 16:9 photos, then save or clear them from the capture gallery.
+4. Use the camera switch control to alternate between front and rear camera preferences.
 
-The button becomes disabled after the stream begins. Reload the page to request and start a new stream.
+The start control toggles the camera stream on and off. The app mirrors that one stream in both previews; it does not open two cameras simultaneously.
 
 ## Implementation
 
 - `index.html` defines the two muted, inline video previews and the start control.
-- `app.js` requests a video-only `MediaStream` with a `facingMode` preference of `user`, then attaches that one stream to both previews.
-- `styles.css` presents the previews as stacked 9:16 and 16:9 frames and accounts for mobile safe-area insets.
+- `app.js` requests a video-only `MediaStream`, attaches it to both previews, controls the preferred camera direction, and crops captured frames into downloadable JPEGs.
+- `styles.css` presents the previews as 9:16 and 16:9 frames, provides mobile-oriented controls, and accounts for mobile safe-area insets.
 - `.github/workflows/static.yml` deploys the repository's static files to GitHub Pages whenever `main` is updated.
 
 ## Browser support
