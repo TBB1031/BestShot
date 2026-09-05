@@ -1,60 +1,33 @@
 # BestShot
 
-A modern dual-camera web application for capturing photos and videos from multiple camera perspectives simultaneously.
+BestShot is a small, static camera app. After permission is granted, it opens a camera stream and displays it in portrait and landscape frames. The shutter produces separate 9:16 and 16:9 photos cropped from the same moment.
 
-## Features
+## Run locally
 
-- **Dual Camera Display** - View vertical and wide-angle camera feeds side-by-side on a single screen
-- **Photo Capture** - Capture high-quality images from both camera perspectives
-- **Video Recording** - Record videos from the active camera stream
-- **Multi-Camera Support** - Switch between available camera devices
-- **Responsive Design** - Optimized layout that fits all controls on screen without scrolling
-- **Accessibility** - Full ARIA labels and keyboard support
-- **Error Handling** - Clear error messages for permission and compatibility issues
+Serve the repository with any static HTTP server, then open the served URL in a supported browser. For example, with Node.js:
+
+```sh
+npx serve .
+```
+
+Camera access requires a secure context: use `https://` in production or `http://localhost` while developing. Opening `index.html` directly from the file system may prevent the browser from granting camera access.
 
 ## Usage
 
-1. Open the app in a modern web browser
-2. Click the camera icon to request camera permissions
-3. Use the shutter button to take photos (captures from both cameras)
-4. Use the record button to start/stop video recording
-5. Use the switch button to change camera devices (if multiple available)
+1. Open the app and select **Start Camera**.
+2. Grant the browser permission to use the camera.
+3. Use the shutter to capture 9:16 and 16:9 photos, then save or clear them from the capture gallery.
+4. Use the camera switch control to alternate between front and rear camera preferences.
 
-## Technical Improvements
+The start control toggles the camera stream on and off. The app mirrors that one stream in both previews; it does not open two cameras simultaneously.
 
-### Layout & Performance
+## Implementation
 
-- Fixed dual camera layout using CSS Grid (1fr 2fr columns) to fit on one screen without scrolling
-- Added `min-height: 0` and `overflow: hidden` for proper flex/grid behavior
-- Optimized touch actions for mobile devices
+- `index.html` defines the two muted, inline video previews and the start control.
+- `app.js` requests a video-only `MediaStream`, attaches it to both previews, controls the preferred camera direction, and crops captured frames into downloadable JPEGs.
+- `styles.css` presents the previews as 9:16 and 16:9 frames, provides mobile-oriented controls, and accounts for mobile safe-area insets.
+- `.github/workflows/static.yml` deploys the repository's static files to GitHub Pages whenever `main` is updated.
 
-### Code Quality
+## Browser support
 
-- Reorganized DOM element selectors into a centralized `UI` object for better maintainability
-- Consolidated application state into a `STATE` object for easier state management
-- Added comprehensive JSDoc comments for all functions
-- Improved error handling with try-catch blocks and detailed error messages
-- Better device enumeration with fallback handling
-
-### UI/UX Enhancements
-
-- Added smooth transitions and hover effects to buttons
-- Added focus-visible outlines for better keyboard navigation
-- Enhanced visual feedback with box-shadow effects on active buttons
-- Improved touch interaction with `touch-action: manipulation`
-
-### Accessibility
-
-- Maintained ARIA labels and `aria-pressed` attributes
-- Added semantic role attributes
-- Focus-visible outlines for keyboard users
-- Clear error messages for accessibility compliance
-
-## Browser Support
-
-Requires a modern browser with support for:
-
-- MediaDevices API
-- WebRTC/getUserMedia
-- CSS Grid
-- ES6+ JavaScript features
+Use a current browser that supports the MediaDevices API, `getUserMedia`, async functions, CSS custom properties, and `aspect-ratio`. A device must have an available camera, and the browser must allow camera permissions.

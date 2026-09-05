@@ -23,6 +23,11 @@ const settingsBtn = document.getElementById('settingsBtn');
 let stream = null;
 let facingMode = 'user';
 
+/**
+ * Updates the lens control to reflect the preferred camera direction.
+ *
+ * @returns {void}
+ */
 function updateCameraLabel() {
   if (lensLabel) {
     lensLabel.textContent = facingMode === 'user' ? 'Front' : 'Rear';
@@ -40,10 +45,6 @@ function stopStream() {
     stream.getTracks().forEach((track) => track.stop());
     stream = null;
   }
-
-async function refreshVideoDevices() {
-  const devices = await navigator.mediaDevices.enumerateDevices();
-   videoDevices = devices.filter((device) => device.kind === 'videoinput');
 }
 
 function disableCaptureControls() {
@@ -58,6 +59,12 @@ function enableCaptureControls() {
   if (flipBtn) flipBtn.disabled = false;
 }
 
+/**
+ * Opens the preferred camera, mirrors its stream in both previews, and enables
+ * the controls that require a live stream.
+ *
+ * @returns {Promise<void>}
+ */
 async function startCamera() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     setStatus('Camera access is not supported in this browser.');
@@ -72,9 +79,12 @@ async function startCamera() {
       audio: false,
     });
 
+    // Both aspect-ratio previews intentionally show the same camera stream.
     if (verticalFrame) verticalFrame.srcObject = stream;
     if (wideFrame) wideFrame.srcObject = stream;
 
+    // Explicit playback accommodates browsers that defer autoplay until a stream
+    // is assigned as the result of a user gesture.
     await Promise.all([
       verticalFrame ? verticalFrame.play() : Promise.resolve(),
       wideFrame ? wideFrame.play() : Promise.resolve(),
