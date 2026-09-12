@@ -42,10 +42,10 @@
 
       <section class="controls" aria-label="Camera controls">
         <div class="mode-row">
-          <button class="pill" id="lensBtn" type="button" aria-label="Camera lens">
-            <span class="lens-symbol">◉</span>
-            <span id="lensLabel">Front</span>
-          </button>
+          <div class="pill" role="status" aria-live="polite" aria-atomic="true">
+            <span class="lens-symbol" aria-hidden="true">◉</span>
+            <span>Camera facing: <span id="lensLabel">Front</span></span>
+          </div>
 
           <div class="format-pill" aria-label="Photo formats">
             <span class="format-symbol">▣</span>
