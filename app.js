@@ -63,12 +63,12 @@ function enableCaptureControls() {
  * Opens the preferred camera, mirrors its stream in both previews, and enables
  * the controls that require a live stream.
  *
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>}
  */
 async function startCamera() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     setStatus('Camera access is not supported in this browser.');
-    return;
+    return false;
   }
 
   try {
@@ -91,14 +91,15 @@ async function startCamera() {
     ]);
 
     if (startBtn) startBtn.textContent = 'Stop Camera';
-    updateCameraLabel();
     enableCaptureControls();
     setStatus('Camera is live');
+    return true;
   } catch (error) {
     console.error(error);
     setStatus('Camera permission was denied or unavailable.');
     if (startBtn) startBtn.textContent = 'Start Camera';
     disableCaptureControls();
+    return false;
   }
 }
 
@@ -115,9 +116,15 @@ function toggleCamera() {
 }
 
 async function switchCamera() {
+  const previousFacingMode = facingMode;
   facingMode = facingMode === 'user' ? 'environment' : 'user';
+  const started = await startCamera();
+
+  if (!started || !stream) {
+    facingMode = previousFacingMode;
+  }
+
   updateCameraLabel();
-  await startCamera();
 }
 
 function dataUrlToBlob(dataUrl) {
